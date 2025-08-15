@@ -8,6 +8,11 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Train, Clock, MapPin, Euro } from "lucide-react";
 import Navbar from "@/components/Navbar";
 
+// Import company logos
+import trenitaliaLogo from "@/assets/logos/trenitalia-logo.png";
+import italoLogo from "@/assets/logos/italo-logo.png";
+import flixbusLogo from "@/assets/logos/flixbus-logo.png";
+
 // Mock data for demonstration
 const mockTickets = [
   {
@@ -62,6 +67,19 @@ const SearchTickets = () => {
   const handleSearch = () => {
     // TODO: Implement real search logic
     console.log("Searching with filters:", filters);
+  };
+
+  const getCompanyLogo = (company: string) => {
+    switch (company.toLowerCase()) {
+      case 'trenitalia':
+        return trenitaliaLogo;
+      case 'italo':
+        return italoLogo;
+      case 'flixbus':
+        return flixbusLogo;
+      default:
+        return null;
+    }
   };
 
   return (
@@ -164,26 +182,38 @@ const SearchTickets = () => {
             <Card key={ticket.id} className="hover:shadow-card transition-shadow">
               <CardContent className="p-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Badge variant="outline">{ticket.company}</Badge>
-                      <Badge variant="secondary">{ticket.offerType}</Badge>
-                      <span className="text-sm text-muted-foreground">
-                        {ticket.trainNumber}
-                      </span>
+                  <div className="flex items-center space-x-4">
+                    {/* Company Logo */}
+                    <div className="flex-shrink-0">
+                      <img 
+                        src={getCompanyLogo(ticket.company)} 
+                        alt={`${ticket.company} logo`}
+                        className="h-12 w-12 object-contain"
+                      />
                     </div>
 
-                    <div className="flex items-center space-x-4 text-sm">
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="h-4 w-4 text-primary" />
-                        <span className="font-medium">{ticket.departure}</span>
-                        <span className="text-muted-foreground">→</span>
-                        <span className="font-medium">{ticket.arrival}</span>
+                    {/* Ticket Info */}
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Badge variant="outline">{ticket.company}</Badge>
+                        <Badge variant="secondary">{ticket.offerType}</Badge>
+                        <span className="text-sm text-muted-foreground">
+                          {ticket.trainNumber}
+                        </span>
                       </div>
 
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4 text-primary" />
-                        <span>{ticket.date} alle {ticket.time}</span>
+                      <div className="flex items-center space-x-4 text-sm">
+                        <div className="flex items-center space-x-1">
+                          <MapPin className="h-4 w-4 text-primary" />
+                          <span className="font-medium">{ticket.departure}</span>
+                          <span className="text-muted-foreground">→</span>
+                          <span className="font-medium">{ticket.arrival}</span>
+                        </div>
+
+                        <div className="flex items-center space-x-1">
+                          <Clock className="h-4 w-4 text-primary" />
+                          <span>{ticket.date} alle {ticket.time}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
